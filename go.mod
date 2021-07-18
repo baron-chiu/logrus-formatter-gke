@@ -1,4 +1,4 @@
-module github.com/yanana/logrus-formatter-gke
+module github.com/bcgodev/logrus-formatter-gke
 
 go 1.13
 
