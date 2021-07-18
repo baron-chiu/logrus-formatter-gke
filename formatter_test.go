@@ -10,6 +10,8 @@ import (
 )
 
 func TestConvertLogLevel(t *testing.T) {
+
+	log.SetReportCaller(true)
 	log.SetFormatter(&GKELogFormatter{
 		TimestampFormat: "XYZ",
 	})
@@ -22,6 +24,7 @@ func TestConvertLogLevel(t *testing.T) {
 
 	out := buf.String()
 	a.JSONEq(`{
+		"logging.googleapis.com/sourceLocation":{"file":"/Users/chiu/dev/bcgodev/logrus-formatter-gke/formatter_test.go","function":"github.com/bcgodev/logrus-formatter-gke.TestConvertLogLevel","line":"23"},
 		"severity": 100,
 		"message": "HOGE",
 		"time": "XYZ"

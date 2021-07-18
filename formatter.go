@@ -3,6 +3,7 @@ package formatter
 import (
 	"encoding/json"
 	"fmt"
+	"strconv"
 	"time"
 
 	"github.com/sirupsen/logrus"
@@ -59,6 +60,14 @@ func (f *GKELogFormatter) Format(entry *logrus.Entry) ([]byte, error) {
 	data["time"] = entry.Time.Format(timestampFormat)
 	data["message"] = entry.Message
 	data["severity"] = convertLogLevel(entry.Level)
+
+	if entry.Caller != nil {
+		data["logging.googleapis.com/sourceLocation"] = map[string]string{
+			"file":     entry.Caller.File,
+			"line":     strconv.Itoa(entry.Caller.Line),
+			"function": entry.Caller.Func.Name(),
+		}
+	}
 
 	serialized, err := json.Marshal(data)
 	if err != nil {
